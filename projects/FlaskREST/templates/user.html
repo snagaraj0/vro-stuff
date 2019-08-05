@@ -1,13 +1,15 @@
 <!doctype html>
 <html>
 <head>
-<title>User #{{ user.id }} - {{ user.name }}</title>
+<title>Parameters #{{ algo_params.id }} - {{ algo_params.name }}</title>
 </head>
 <body>
 
-<b>User ID:</b> <i>{{ user.id }}</i><br>
-<b>User name:</b> <i>{{ user.name }}</i><br>
-<b>User mail:</b> <a href="mailto:{{ user.mail }}">{{ user.mail }}</a>
+<b>Algorithm ID:</b> <i>{{ algo_params.id }}</i><br>
+<b>Algorithm name:</b> <i>{{algo_params.name }}</i><br>
+<b>Algorithm param1:</b> <i>{{algo_params.param1}}</i><br>
+<b>Algorithm param2:</b> <i>{{algo_params.param2}}</i><br>
+<b>Algorithm param3:</b> <i>{{algo_params.param3}}</i>
 
 </form>
 </body>
