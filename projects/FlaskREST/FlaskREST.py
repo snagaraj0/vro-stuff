@@ -213,7 +213,7 @@ def algo_params_get(algo_id):
         #return one algo param
         DB_CUR.execute(
             "SELECT * FROM algo_params WHERE algo_id=?;",
-            (algo_id)
+            (algo_id,)
         )
     else:
         #return all param names
