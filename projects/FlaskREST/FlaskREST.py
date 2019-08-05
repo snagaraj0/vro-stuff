@@ -308,7 +308,7 @@ def form_edit(algo_id):
     if request.method == "POST":
         #edit user
         if algo_params_update(
-                algo_id, request.form["name"], request.form["id"], request.form["param1"], request.form["param2"], request.form["param3"]
+                algo_id, request.form["id"], request.form["name"], request.form["param1"], request.form["param2"], request.form["param3"]
             ):
             return "algo params edited!"
         return "algo params could not be edited!"
