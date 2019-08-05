@@ -185,7 +185,7 @@ def algo_params_remove(algo_id):
     print("About to remove algo param #{}".format(algo_id))
     try:
         DB_CUR.execute(
-            "DELETE FROM users WHERE algo_id=?",
+            "DELETE FROM algo_params WHERE algo_id=?",
             (algo_id,)
         )
         DB_CONN.commit()
