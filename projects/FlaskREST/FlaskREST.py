@@ -200,7 +200,7 @@ def algo_params_remove(algo_id):
         ))
         return False
 
-def algo_params_get(algo_name):
+def algo_params_get(algo_id):
     """
     This function retrieves a user's information.
 
@@ -210,11 +210,11 @@ def algo_params_get(algo_name):
     global DB_CUR
 
     #execute database query
-    if algo_name is not None:
+    if algo_name > 0:
         #return one algo param
         DB_CUR.execute(
-            "SELECT * FROM algo_params WHERE algo_name=?;",
-            (algo_name)
+            "SELECT * FROM algo_params WHERE algo_id=?;",
+            (algo_id)
         )
     else:
         #return all param names
@@ -272,8 +272,8 @@ def form_users():
     #render users in HTML template
     return render_template("users.html", result=algos)
 
-@APP.route("/algo_params/<str:algo_name>", methods=["GET"])
-def form_user(algo_name):
+@APP.route("/algo_params/<int:algo_id>", methods=["GET"])
+def form_user(algo_id):
     """
     This function displays a particular user.
 
@@ -281,7 +281,7 @@ def form_user(algo_name):
     :type user_id: int
     """
     #display a particular users
-    result = algo_params_get(algo_name)["results"][0]
+    result = algo_params_get(algo_id)["results"][0]
     return render_template("user.html", user=result)
 
 @APP.route("/algo_params/delete/<int:user_id>", methods=["GET"])
@@ -324,14 +324,14 @@ def form_edit(algo_name):
 
 
 #FLASK API FUNCTIONS
-@APP.route("/api/algo_params/<str:algo_name>", methods=["GET"])
+@APP.route("/api/algo_params/<int:algo_id>", methods=["GET"])
 def user_show(user_id):
     """
     This function shows a particular user.
     """
     #return a particular user
     print("Retrieve algo params {}".format(algo_name))
-    result = algo_params_get(algo_name)
+    result = algo_params_get(algo_id)
     return Response(json.dumps(result), mimetype="application/json")
 
 @APP.route("/api/algo_params", methods=["POST"])
