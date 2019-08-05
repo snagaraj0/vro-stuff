@@ -88,12 +88,11 @@ def algo_params_create(algo_id, algo_name, algo_param1, algo_param2, algo_param3
             "Added algo_paramater #{} with name={},param1={}, param2={}, param3={}".format(
                 algo_id, algo_name, algo_param1, algo_param2, algo_param3)
             )
-            )
         return True
     except Exception as err:
         print("Unable to create algo_paramater #{} with name={},param1={}, param2={}, param3={}: {}".format(
                 algo_id, algo_name, algo_param1, algo_param2, algo_param3, err)
-        ))
+        )
         return False
 
 def algo_params_update(algo_id, algo_newid, algo_name, algo_param1, algo_param2, algo_param3):
@@ -120,13 +119,13 @@ def algo_params_update(algo_id, algo_newid, algo_name, algo_param1, algo_param2,
             WHERE algo_id=?""", (
                 algo_newid, algo_name, algo_param1, algo_param2, algo_param3, algo_id)
             )
-        )
+        
         DB_CONN.commit()
         print(
             "Updated algorithm parameters #{} with algorithm parameters={},name={},param1={}, param2={}, param3={}".format(
                 algo_id, algo_newid, algo_name, algo_param1, algo_param2, algo_param3)
             )
-            )
+            
         return True
     except Exception as err:
         print("Unable to update algorithm parameters #{} with algorithm parameters={},name={},param1={}, param2={}, param3={}: {}".format(
@@ -159,13 +158,13 @@ def algo_params_update_byName(algo_name, algo_newname, algo_id, algo_param1, alg
             WHERE algo_name=?""", (
                 algo_newname, algo_id, algo_param1, algo_param2, algo_param3, algo_name)
             )
-        )
+        
         DB_CONN.commit()
         print(
             "Updated algorithm parameters name {} with algorithm parameters name ={},id={},param1={}, param2={}, param3={}".format(
                 algo_name, algo_newname, algo_id, algo_param1, algo_param2, algo_param3)
             )
-            )
+            
         return True
     except Exception as err:
         print("Unable to update algorithm parameters name {} with algorithm parameters name ={},id={},param1={}, param2={}, param3={}: {}".format(
