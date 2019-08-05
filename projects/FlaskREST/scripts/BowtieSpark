@@ -1,0 +1,110 @@
+import findspark
+findspark.init()
+from pyspark import SparkConf, SparkContext, TaskContext, SparkFiles
+import math
+import os
+import time
+from pyspark.sql import SQLContext
+import subprocess
+
+conf = SparkConf().setAppName("BowtieSpark") 
+conf = conf.set('spark.driver.memory', '56G')
+
+sc = SparkContext(conf=conf)
+
+test_input = input("Directory that houses your first fastq file (Ex: /s1/snagaraj/project_env/SRR639031_1.fastq)   ")
+o_input = input("Directory with your second fastq file(Ex: /s1/snagaraj/project_env/SRR639031_2.fastq)      ")
+
+subprocess.call(["hdfs", "dfs", "-mkdir", "/user/data"])
+subprocess.call(["hdfs", "dfs", "-put", test_input, "/user/data" ])
+subprocess.call(["hdfs", "dfs", "-put", o_input, "/user/data" ])
+
+test_input = test_input.split('/')
+test_len = len(test_input) - 1
+end_input = test_input[test_len]
+
+o_input = o_input.split('/')
+test_len = len(o_input) -1
+fin_input= o_input[test_len]
+
+
+input_file = "hdfs:///user/data/" + end_input
+
+input_file1 = "hdfs:///user/data/" + fin_input
+
+print(input_file)
+print(input_file1)
+
+# creates tuples with format (string, line number)
+raw_input = (sc.textFile(input_file)).zipWithIndex()
+raw_input1 = (sc.textFile(input_file1)).zipWithIndex()
+
+# create tuple with format (read number, string)
+indexed_raw_input = raw_input.map(lambda x: (math.floor(x[1]/4), x[0]))
+indexed_raw_input1 = raw_input1.map(lambda x: (math.floor(x[1]/4), x[0]))
+
+# Function to pass to map function that concatenates the 4 strings
+def make_reads(iterable_read):
+    x = 0
+    line1 = ""
+    line2 = ""
+    line3 = ""
+    line4 = ""
+    for line in iterable_read:
+        if x == 0:
+            line1 = line
+        if x == 1:
+            line2 = line
+        if x == 2:
+            line3 = line
+        if x == 3:
+            line4 = line
+        x = x+1
+    return "%s\n%s\n%s\n%s\n" % (line1, line2, line3, line4)
+
+
+reads_tuple = indexed_raw_input.groupByKey().mapValues(lambda x: make_reads(x))
+reads_tuple1= indexed_raw_input1.groupByKey().mapValues(lambda x: make_reads(x))
+
+
+# Sort by key, which is just the line number, and then get the values, which is just the read.
+readsRDD = reads_tuple.sortByKey().values()
+readsRDD1 = reads_tuple1.sortByKey().values()
+
+
+bowtie_index = input("Input the path to the bowtie index")
+
+
+# Run script that starts bowtie with parameters to bowtie index.
+alignment_pipe = readsRDD.pipe("/s1/snagaraj/bowtie2/bowtie2 -p6 --sam-no-hd --sam-no-sq --quiet --local --very-sensitive-local -x " + bowtie_index + " -")
+
+alignment_pipe1 = readsRDD1.pipe("/s1/snagaraj/bowtie2/bowtie2 -p6 --sam-no-hd --sam-no-sq --quiet --local --very-sensitive-local -x " + bowtie_index + " -")
+
+def sam(output):
+    try:
+        file = open("output.sam", "a+")
+        for alignment in output:
+            file.write(alignment + '\n')
+        file.close()
+    except Exception as ex:
+        print(ex)
+
+
+def sam1(output):
+    try:
+        file = open("output1.sam", "a+")
+        for alignment in output:
+            file.write(alignment + '\n')
+        file.close()
+    except Exception as ex:
+        print(ex)
+
+start = time.time()
+print(start)
+aligned_output = alignment_pipe.foreachPartition(lambda partition: sam(partition))
+aligned_output1 = alignment_pipe1.foreachPartition(lambda partition: sam1(partition))
+end = time.time()
+print(end)
+print("Runtime: " + str(end-start))
+
+sc.stop()
