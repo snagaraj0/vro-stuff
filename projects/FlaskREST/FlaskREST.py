@@ -277,20 +277,20 @@ def form_user(algo_id):
     """
     This function displays a particular user.
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_id: algo ID
+    :type algo_id: int
     """
     #display a particular users
     result = algo_params_get(algo_id)["results"][0]
     return render_template("user.html", algo_params=result)
 
-@APP.route("/algo_params/delete/<int:user_id>", methods=["GET"])
+@APP.route("/algo_params/delete/<int:algo_id>", methods=["GET"])
 def from_delete(algo_id):
     """
     This function deletes a particular user.
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_id: algo ID
+    :type algo_id: int
     """
     #try to delete user
     if algo_params_delete(algo_id):
