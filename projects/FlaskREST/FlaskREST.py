@@ -316,7 +316,7 @@ def form_edit(algo_id):
         #show form, preselect values
         try:
             result = algo_params_get(algo_id)["results"][0]
-            return render_template("edit.html", user=result)
+            return render_template("edit.html", algo_params=result)
         except IndexError:
             return render_template("nonexist.html")
 
