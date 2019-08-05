@@ -386,7 +386,7 @@ if __name__ == "__main__":
     #register atexit
     atexit.register(shutdown)
     #start database
-    DB_CONN = sqlite3.connect("algo_params.db")
+    DB_CONN = sqlite3.connect("algo_params.db", check_same_thread=False)
     DB_CUR = DB_CONN.cursor()
     #enable if you also like to live dangerously
     #APP.run(debug=False, host="0.0.0.0")
