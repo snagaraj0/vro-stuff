@@ -368,7 +368,7 @@ def user_change(algo_id):
     return Response(return_result(result), mimetype="application/json")
 
 @APP.route("/api/algo_params/<int:algo_id>", methods=["DELETE"])
-def user_delete(algo_id):
+def algo_params_delete(algo_id):
     """
     This function removes an user.
 
