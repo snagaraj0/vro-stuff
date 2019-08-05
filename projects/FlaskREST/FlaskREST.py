@@ -203,8 +203,8 @@ def algo_params_get(algo_id):
     """
     This function retrieves a user's information.
 
-    :param algo_name: name of param
-    :type algo_name: str
+    :param algo_id: param id
+    :type algo_id: int
     """
     global DB_CUR
 
