@@ -296,8 +296,8 @@ def from_delete(algo_id):
         return "User deleted!"
     return "User could not be deleted!"
 
-@APP.route("/algo_params/edit/<int:algo_name>", methods=["GET", "POST"])
-def form_edit(algo_name):
+@APP.route("/algo_params/edit/<int:algo_id>", methods=["GET", "POST"])
+def form_edit(algo_id):
     """
     This function presents the form to edit users and returns form
     data to the API.
@@ -305,18 +305,17 @@ def form_edit(algo_name):
     :param algo_id: algo ID
     :type algo_id: int
     """
-    algo_name=str(algo_name)
     if request.method == "POST":
         #edit user
-        if algo_params_update_byName(
-                algo_name, request.form["name"], request.form["id"], request.form["param1"], request.form["param2"], request.form["param3"]
+        if algo_params_update(
+                algo_id, request.form["name"], request.form["id"], request.form["param1"], request.form["param2"], request.form["param3"]
             ):
             return "algo params edited!"
         return "algo params could not be edited!"
     else:
         #show form, preselect values
         try:
-            result = algo_params_get(algo_name)["results"][0]
+            result = algo_params_get(algo_id)["results"][0]
             return render_template("edit.html", user=result)
         except IndexError:
             return render_template("nonexist.html")
@@ -349,8 +348,8 @@ def user_add():
         json_data["item"]["param3"])
     return Response(return_result(result), mimetype="application/json")
 
-@APP.route("/api/algo_params/<int:algo_name>", methods=["PUT"])
-def user_change(algo_name):
+@APP.route("/api/algo_params/<int:algo_id>", methods=["PUT"])
+def user_change(algo_id):
     """
     This function updates an existing user.
 
@@ -358,11 +357,10 @@ def user_change(algo_name):
     :type algo_name: str
     """
     #execute and return result
-    algo_name=str(algo_name)
-    print("Update algo params name #{}".format(algo_name))
+    print("Update algo params #{}".format(algo_id))
     json_data = get_data(request.data)
-    result = algo_params_update_byName(
-        algo_name, json_data["item"]["name"], json_data["item"]["id"],
+    result = algo_params_update(
+        algo_id, json_data["item"]["name"], json_data["item"]["id"],
         json_data["item"]["param1"],
         json_data["item"]["param2"],
         json_data["item"]["param3"])
