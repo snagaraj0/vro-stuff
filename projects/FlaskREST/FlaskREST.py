@@ -324,12 +324,12 @@ def form_edit(algo_name):
 
 #FLASK API FUNCTIONS
 @APP.route("/api/algo_params/<int:algo_id>", methods=["GET"])
-def user_show(user_id):
+def user_show(algo_id):
     """
     This function shows a particular user.
     """
     #return a particular user
-    print("Retrieve algo params {}".format(algo_name))
+    print("Retrieve algo params {}".format(algo_id))
     result = algo_params_get(algo_id)
     return Response(json.dumps(result), mimetype="application/json")
 
@@ -348,8 +348,8 @@ def user_add():
         json_data["item"]["param3"])
     return Response(return_result(result), mimetype="application/json")
 
-@APP.route("/api/algo_params/<str:algo_name>", methods=["PUT"])
-def user_change(user_id):
+@APP.route("/api/algo_params/<int:algo_name>", methods=["PUT"])
+def user_change(algo_name):
     """
     This function updates an existing user.
 
@@ -357,6 +357,7 @@ def user_change(user_id):
     :type algo_name: str
     """
     #execute and return result
+    algo_name=str(algo_name)
     print("Update algo params name #{}".format(algo_name))
     json_data = get_data(request.data)
     result = algo_params_update_byName(
@@ -366,8 +367,8 @@ def user_change(user_id):
         json_data["item"]["param3"])
     return Response(return_result(result), mimetype="application/json")
 
-@APP.route("/api/algo_params/<int:user_id>", methods=["DELETE"])
-def user_delete(user_id):
+@APP.route("/api/algo_params/<int:algo_id>", methods=["DELETE"])
+def user_delete(algo_id):
     """
     This function removes an user.
 
@@ -375,7 +376,7 @@ def user_delete(user_id):
     :type algo_id: int
     """
     print("Delete algo params #{}".format(algo_id))
-    result = algo_params_remove(user_id)
+    result = algo_params_remove(algo_id)
     return Response(return_result(result), mimetype="application/json")
 
 if __name__ == "__main__":
