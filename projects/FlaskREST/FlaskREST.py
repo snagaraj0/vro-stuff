@@ -281,7 +281,7 @@ def form_user(algo_id):
     """
     #display a particular users
     result = algo_params_get(algo_id)["results"][0]
-    return render_template("user.html", user=result)
+    return render_template("user.html", algo_params=result)
 
 @APP.route("/algo_params/delete/<int:user_id>", methods=["GET"])
 def from_delete(algo_id):
