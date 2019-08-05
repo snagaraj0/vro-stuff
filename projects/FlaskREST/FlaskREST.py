@@ -115,10 +115,11 @@ def algo_params_update(algo_id, algo_newid, algo_name, algo_param1, algo_param2,
 
     try:
         DB_CUR.execute(
-            """UPDATE algo_params SET algo_id=?, algo_name=?, algo_param1=?, algo_param2=?, algo_param3=?,
+            """UPDATE algo_params SET algo_id=?, algo_name=?, algo_param1=?, algo_param2=?, algo_param3=?
             WHERE algo_id=?""", (
-                algo_newid, algo_name, algo_param1, algo_param2, algo_param3, algo_id)
+                algo_newid, algo_name, algo_param1, algo_param2, algo_param3, algo_id
             )
+          )
         
         DB_CONN.commit()
         print(
