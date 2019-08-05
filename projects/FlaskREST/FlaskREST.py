@@ -209,7 +209,7 @@ def algo_params_get(algo_id):
     global DB_CUR
 
     #execute database query
-    if algo_name > 0:
+    if algo_id > 0:
         #return one algo param
         DB_CUR.execute(
             "SELECT * FROM algo_params WHERE algo_id=?;",
@@ -296,7 +296,7 @@ def from_delete(algo_id):
         return "User deleted!"
     return "User could not be deleted!"
 
-@APP.route("/algo_params/edit/<str:algo_name>", methods=["GET", "POST"])
+@APP.route("/algo_params/edit/<int:algo_name>", methods=["GET", "POST"])
 def form_edit(algo_name):
     """
     This function presents the form to edit users and returns form
@@ -305,6 +305,7 @@ def form_edit(algo_name):
     :param algo_id: algo ID
     :type algo_id: int
     """
+    algo_name=str(algo_name)
     if request.method == "POST":
         #edit user
         if algo_params_update_byName(
