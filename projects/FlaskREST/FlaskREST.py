@@ -59,120 +59,166 @@ def return_result(result):
 
 #DATABASE FUNCTIONS
 #TODO: creating and editing users in ONE function?
-def user_create(user_id, user_name, user_mail):
+def algo_params_create(algo_id, algo_name, algo_param1, algo_param2, algo_param3):
     """
     This function creates an user.
 
-    :param user_id: user ID
-    :type user_id: int
-    :param user_name: user name
-    :type user_name: str
-    :param user_mail: user mail
-    :type user_mail: str
+    :param algo_id: query in order id
+    :type algo_id: int
+    :param algo_name: name
+    :type algo_name: str
+    :param algo_param1: parameter 1
+    :type algo_param1: str
+    :param algo_param2: parameter 2
+    :type algo_param2: str
+    :param algo_param3: parameter 3
+    :type algo_param3: str
     """
     global DB_CONN
     global DB_CUR
 
     try:
         DB_CUR.execute(
-            """INSERT INTO users (user_id, user_name, user_mail)
-            VALUES (?, ?, ?)""",
-            (user_id, user_name, user_mail)
+            """INSERT INTO algo_params (algo_id, algo_name, algo_param1, algo_param2, algo_param3)
+            VALUES (?, ?, ?, ?, ?)""",
+            (algo_id, algo_name, algo_param1, algo_param2, algo_param3)
         )
         DB_CONN.commit()
         print(
-            "Added user #{} with name={},mail={}".format(
-                user_id, user_name, user_mail
+            "Added algo_paramater #{} with name={},param1={}, param2={}, param3={}".format(
+                algo_id, algo_name, algo_param1, algo_param2, algo_param3)
             )
             )
         return True
     except Exception as err:
-        print("Unable to create user #{} with name={},mail={}: {}".format(
-            user_id, user_name, user_mail, err
+        print("Unable to create algo_paramater #{} with name={},param1={}, param2={}, param3={}: {}".format(
+                algo_id, algo_name, algo_param1, algo_param2, algo_param3, err)
         ))
         return False
 
-def user_update(user_id, user_newid, user_name, user_mail):
+def algo_params_update(algo_id, algo_newid, algo_name, algo_param1, algo_param2, algo_param3):
     """
-    This function updates an user.
+    This function updates the algorithm parameters
 
-    :param user_id: user ID
-    :type user_id: int
-    :param user_name: user name
-    :type user_name: str
-    :param user_mail: user mail
-    :type user_mail: str
+    :param algo_id: query in order id
+    :type algo_id: int
+    :param algo_name: name
+    :type algo_name: str
+    :param algo_param1: parameter 1
+    :type algo_param1: str
+    :param algo_param2: parameter 2
+    :type algo_param2: str
+    :param algo_param3: parameter 3
+    :type algo_param3: str
     """
     global DB_CONN
     global DB_CUR
 
     try:
         DB_CUR.execute(
-            """UPDATE users SET user_id=?, user_name=?, user_mail=?
-            WHERE user_id=?""", (
-                user_newid, user_name, user_mail, user_id
+            """UPDATE algo_params SET algo_id=?, algo_name=?, algo_param1=?, algo_param2=?, algo_param3=?,
+            WHERE algo_id=?""", (
+                algo_newid, algo_name, algo_param1, algo_param2, algo_param3, algo_id)
             )
         )
         DB_CONN.commit()
         print(
-            "Updated user #{} with id={},name={},mail={}".format(
-                user_id, user_newid, user_name, user_mail
+            "Updated algorithm parameters #{} with algorithm parameters={},name={},param1={}, param2={}, param3={}".format(
+                algo_id, algo_newid, algo_name, algo_param1, algo_param2, algo_param3)
             )
             )
         return True
     except Exception as err:
-        print("Unable to update user #{} with id={},name={},mail={}: {}".format(
-            user_id, user_newid, user_name, user_mail, err
-        ))
+        print("Unable to update algorithm parameters #{} with algorithm parameters={},name={},param1={}, param2={}, param3={}: {}".format(
+                algo_id, algo_newid, algo_name, algo_param1, algo_param2, algo_param3, err)
+        )
         return False
 
-def user_remove(user_id):
+    
+def algo_params_update_byName(algo_name, algo_newname, algo_id, algo_param1, algo_param2, algo_param3):
     """
-    This function removes an user.
+    This function updates the algorithm parameters
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_id: query in order id
+    :type algo_id: int
+    :param algo_name: name
+    :type algo_name: str
+    :param algo_param1: parameter 1
+    :type algo_param1: str
+    :param algo_param2: parameter 2
+    :type algo_param2: str
+    :param algo_param3: parameter 3
+    :type algo_param3: str
     """
     global DB_CONN
     global DB_CUR
 
-    print("About to remove user #{}".format(user_id))
     try:
         DB_CUR.execute(
-            "DELETE FROM users WHERE user_id=?",
-            (user_id,)
+            """UPDATE algo_params SET algo_name=?, algo_name=?, algo_param1=?, algo_param2=?, algo_param3=?,
+            WHERE algo_name=?""", (
+                algo_newname, algo_id, algo_param1, algo_param2, algo_param3, algo_name)
+            )
+        )
+        DB_CONN.commit()
+        print(
+            "Updated algorithm parameters name {} with algorithm parameters name ={},id={},param1={}, param2={}, param3={}".format(
+                algo_name, algo_newname, algo_id, algo_param1, algo_param2, algo_param3)
+            )
+            )
+        return True
+    except Exception as err:
+        print("Unable to update algorithm parameters name {} with algorithm parameters name ={},id={},param1={}, param2={}, param3={}: {}".format(
+                algo_name, algo_newname, algo_id, algo_param1, algo_param2, algo_param3, err)
+        )
+        return False
+def algo_params_remove(algo_id):
+    """
+    This function removes an algorithm param.
+
+    :param algo_id: algorithm param id
+    :type algo_id: int
+    """
+    global DB_CONN
+    global DB_CUR
+
+    print("About to remove algo param #{}".format(algo_id))
+    try:
+        DB_CUR.execute(
+            "DELETE FROM users WHERE algo_id=?",
+            (algo_id,)
         )
         DB_CONN.commit()
         #check whether an user was removed
         if DB_CUR.rowcount > 0:
-            print("Removed user #{}".format(user_id))
+            print("Removed algo param #{}".format(algo_id))
             return True
         return False
     except Exception as err:
-        print("Unable to remove user #{}: {}".format(
-            user_id, err
+        print("Unable to remove algo parm #{}: {}".format(
+            algo_id, err
         ))
         return False
 
-def user_get(user_id):
+def algo_params_get(algo_name):
     """
     This function retrieves a user's information.
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_name: name of param
+    :type algo_name: str
     """
     global DB_CUR
 
     #execute database query
-    if user_id > 0:
-        #return all users
+    if algo_name is not None:
+        #return one algo param
         DB_CUR.execute(
-            "SELECT * FROM users WHERE user_id=?;",
-            (user_id,)
+            "SELECT * FROM algo_params WHERE algo_name=?;",
+            (algo_name)
         )
     else:
-        #return one particular user
-        DB_CUR.execute("SELECT * FROM users;")
+        #return all param names
+        DB_CUR.execute("SELECT * FROM algo_params;")
 
     #prepare result
     json = {}
@@ -183,7 +229,9 @@ def user_get(user_id):
         temp[row[0]] = {}
         temp[row[0]]["id"] = row[0]
         temp[row[0]]["name"] = row[1]
-        temp[row[0]]["mail"] = row[2]
+        temp[row[0]]["param1"] = row[2]
+        temp[row[0]]["param2"] = row[3]
+        temp[row[0]]["param3"] = row[4]
         results.append(temp[row[0]])
     json["results"] = results
     return json
@@ -198,34 +246,34 @@ def index():
     """
     return render_template("index.html")
 
-@APP.route("/user/create", methods=["GET", "POST"])
+@APP.route("/algo_params/create", methods=["GET", "POST"])
 def form_create():
     """
     This function presents the form to create users and returns the API result.
     """
     if request.method == "POST":
         #create user
-        if user_create(
-                request.form["id"], request.form["name"], request.form["mail"]
+        if algo_params_create(
+                request.form["id"], request.form["name"], request.form["param1"], request.form["param2"], request.form["param3"]
             ):
-            return "User created!"
-        return "User could not be created!"
+            return "Algo params created!"
+        return "Algo params could not be created!"
     else:
         #show form
         return render_template("create.html")
 
-@APP.route("/user/", methods=["GET"])
+@APP.route("/algo_params/", methods=["GET"])
 def form_users():
     """
     This function lists all users.
     """
     #get _all_ the users
-    users = user_get(0)
+    algos = algo_params_get(0)
     #render users in HTML template
-    return render_template("users.html", result=users)
+    return render_template("users.html", result=algos)
 
-@APP.route("/user/<int:user_id>", methods=["GET"])
-def form_user(user_id):
+@APP.route("/algo_params/<str:algo_name>", methods=["GET"])
+def form_user(algo_name):
     """
     This function displays a particular user.
 
@@ -233,11 +281,11 @@ def form_user(user_id):
     :type user_id: int
     """
     #display a particular users
-    result = user_get(user_id)["results"][0]
+    result = algo_params_get(algo_name)["results"][0]
     return render_template("user.html", user=result)
 
-@APP.route("/user/delete/<int:user_id>", methods=["GET"])
-def from_delete(user_id):
+@APP.route("/algo_params/delete/<int:user_id>", methods=["GET"])
+def from_delete(algo_id):
     """
     This function deletes a particular user.
 
@@ -245,31 +293,30 @@ def from_delete(user_id):
     :type user_id: int
     """
     #try to delete user
-    if user_delete(user_id):
+    if algo_params_delete(algo_id):
         return "User deleted!"
     return "User could not be deleted!"
 
-@APP.route("/user/edit/<int:user_id>", methods=["GET", "POST"])
-def form_edit(user_id):
+@APP.route("/algo_params/edit/<str:algo_name>", methods=["GET", "POST"])
+def form_edit(algo_name):
     """
     This function presents the form to edit users and returns form
     data to the API.
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_id: algo ID
+    :type algo_id: int
     """
     if request.method == "POST":
         #edit user
-        if user_update(
-                user_id, request.form["id"], request.form["name"],
-                request.form["mail"]
+        if algo_params_update_byName(
+                algo_name, request.form["name"], request.form["id"], request.form["param1"], request.form["param2"], request.form["param3"]
             ):
-            return "User edited!"
-        return "User could not be edited!"
+            return "algo params edited!"
+        return "algo params could not be edited!"
     else:
         #show form, preselect values
         try:
-            result = user_get(user_id)["results"][0]
+            result = algo_params_get(algo_name)["results"][0]
             return render_template("edit.html", user=result)
         except IndexError:
             return render_template("nonexist.html")
@@ -277,56 +324,59 @@ def form_edit(user_id):
 
 
 #FLASK API FUNCTIONS
-@APP.route("/api/user/<int:user_id>", methods=["GET"])
+@APP.route("/api/algo_params/<str:algo_name>", methods=["GET"])
 def user_show(user_id):
     """
     This function shows a particular user.
     """
     #return a particular user
-    print("Retrieve user #{}".format(user_id))
-    result = user_get(user_id)
+    print("Retrieve algo params {}".format(algo_name))
+    result = algo_params_get(algo_name)
     return Response(json.dumps(result), mimetype="application/json")
 
-@APP.route("/api/user", methods=["POST"])
+@APP.route("/api/algo_params", methods=["POST"])
 def user_add():
     """
     This function creates a new user.
     """
     #execute and return result
     json_data = get_data(request.data)
-    print("Create user #{}".format(json_data["item"]["name"]))
-    result = user_create(
+    print("Create algo_params {}".format(json_data["item"]["name"]))
+    result = algo_params_create(
         json_data["item"]["id"], json_data["item"]["name"],
-        json_data["item"]["mail"])
+        json_data["item"]["param1"],
+        json_data["item"]["param2"],
+        json_data["item"]["param3"])
     return Response(return_result(result), mimetype="application/json")
 
-@APP.route("/api/user/<int:user_id>", methods=["PUT"])
+@APP.route("/api/algo_params/<str:algo_name>", methods=["PUT"])
 def user_change(user_id):
     """
     This function updates an existing user.
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_name: algo name
+    :type algo_name: str
     """
     #execute and return result
-    print("Update user #{}".format(user_id))
+    print("Update algo params name #{}".format(algo_name))
     json_data = get_data(request.data)
-    result = user_update(
-        user_id, json_data["item"]["id"],
-        json_data["item"]["name"], json_data["item"]["mail"]
-    )
+    result = algo_params_update_byName(
+        algo_name, json_data["item"]["name"], json_data["item"]["id"],
+        json_data["item"]["param1"],
+        json_data["item"]["param2"],
+        json_data["item"]["param3"])
     return Response(return_result(result), mimetype="application/json")
 
-@APP.route("/api/user/<int:user_id>", methods=["DELETE"])
+@APP.route("/api/algo_params/<int:user_id>", methods=["DELETE"])
 def user_delete(user_id):
     """
     This function removes an user.
 
-    :param user_id: user ID
-    :type user_id: int
+    :param algo_id: algo ID
+    :type algo_id: int
     """
-    print("Delete user #{}".format(user_id))
-    result = user_remove(user_id)
+    print("Delete algo params #{}".format(algo_id))
+    result = algo_params_remove(user_id)
     return Response(return_result(result), mimetype="application/json")
 
 if __name__ == "__main__":
@@ -336,7 +386,7 @@ if __name__ == "__main__":
     #register atexit
     atexit.register(shutdown)
     #start database
-    DB_CONN = sqlite3.connect("users.db")
+    DB_CONN = sqlite3.connect("algo_params.db")
     DB_CUR = DB_CONN.cursor()
     #enable if you also like to live dangerously
     #APP.run(debug=False, host="0.0.0.0")
