@@ -1,13 +1,15 @@
 <!doctype html>
 <html>
 <head>
-<title>Edit user #{{ user.id }}</title>
+<title>Edit algorithm parameters #{{ algo_params.id }}</title>
 </head>
 <body>
-<form method="post" action="/user/edit/{{ user.id }}">
-User ID: <input name="id" type="number" value="{{ user.id }}"><br>
-User name: <input name="name" type="text" value="{{ user.name }}"><br>
-User mail: <input name="mail" type="text" value="{{ user.mail }}"><br>
+<form method="post" action="/algo_params/edit/{{ algo_params.name }}">
+Algo ID: <input name="id" type="number"><br>
+Algo name: <input name="name" type="text"><br>
+Algo param1 : <input name="mail" type="text"><br>
+Algo param2 : <input name="mail" type="text"><br>
+Algo param3 : <input name="mail" type="text"><br>
 <input type="submit" value="Submit">
 </form>
 </body>
